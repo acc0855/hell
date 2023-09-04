@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Push Notifications Example</title>
+</head>
+<body>
+    <h1>Push Notifications Example</h1>
+    
+    <button id="notifyButton">Send Notification to All Users</button>
+
+    <script>
+        if ("Notification" in window) {
+            if (Notification.permission === "granted") {
+                // Notification permission is already granted
+            } else {
+                Notification.requestPermission().then(permission => {
+                    if (permission !== "granted") {
+                        console.error("Notification permission not granted");
+                    }
+                });
+            }
+        } else {
+            console.error("Browser does not support notifications");
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const notifyButton = document.getElementById("notifyButton");
+
+            notifyButton.addEventListener("click", () => {
+                if (Notification.permission === "granted") {
+                    sendNotification();
+                } else {
+                    console.error("Permission not granted for notifications");
+                }
+            });
+
+            function sendNotification() {
+                const notification = new Notification("Breaking News:", {
+                    body: "Celebrity Caught in Fresh Scandal",
+                    icon: "https://unsplash.it/400/400",
+                    vibration: [300, 200, 300],
+                });
+
+                notification.addEventListener("click", function () {
+                    window.open("https://www.openjavascript.info");
+                });
+
+                setTimeout(() => notification.close(), 5000); // Close notification after 5 seconds
+            }
+        });
+    </script>
+</body>
+</html>
+
